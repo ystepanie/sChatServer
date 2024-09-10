@@ -8,14 +8,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ideaproject.schatServer.dto.ServerSocketDto;
 import com.ideaproject.schatServer.response.Response;
+import com.ideaproject.schatServer.service.ServerService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/v1/schatServer")
 @RequiredArgsConstructor
+@Tag(name = "serverSocket", description = "서버 소켓 관련 api")
 public class ServerController {
+	private final ServerService serverService;
+
 	//todo: 프로젝트 실행 시 서버 소켓 생성(서버 소켓은 while문을 통해 계속 클라이언트의 입장을 받아야 한다.)
 	//ㄴ 클라이언트 접속 시 스레드 생성
 	//todo: 웨이팅 방 들어가기(클라이언트 프로젝트)
