@@ -15,7 +15,7 @@ public class SwaggerConfig {
 		Info info = new Info()
 			.version("v1.0.0")
 			.title("SCHATSERVER")
-			.description("schat 서비스 서버 부분 API");
+			.description("schat 서비스 API");
 
 		return new OpenAPI()
 			.info(info);

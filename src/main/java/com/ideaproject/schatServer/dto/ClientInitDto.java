@@ -5,9 +5,8 @@ import org.springframework.context.annotation.Description;
 import lombok.Getter;
 import lombok.Setter;
 
-@Description("서버 소켓 dto")
+@Description("클라이언트 소켓 dto")
 @Getter
-@Setter
-public class ServerSocketDto {
+public class ClientInitDto {
 	private String name;
 }
