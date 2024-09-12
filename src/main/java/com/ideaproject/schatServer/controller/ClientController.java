@@ -3,6 +3,7 @@ package com.ideaproject.schatServer.controller;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +32,7 @@ public class ClientController {
 	//ㄴ 접속 종료 시 스레드 종료
 
 	// 클라이언트 연결 api
-	@PostMapping("/startClientConnect")
+	@PostMapping(value = "/startClientConnect", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Response startClientConnect(@RequestBody ClientInitDto clientInitDto) throws Exception {
 		Map<String, Object> resultMap = clientService.startClientConnect(clientInitDto);
 

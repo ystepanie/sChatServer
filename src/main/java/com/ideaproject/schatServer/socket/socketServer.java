@@ -6,46 +6,64 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.ideaproject.schatServer.thread.ChatThread;
+import com.sun.tools.javac.Main;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 
 @Component
 public class socketServer {
+	private static final Logger log = LoggerFactory.getLogger(socketServer.class);
 	private ServerSocket serverSocket;
 	private List<ChatThread> chatThreads = Collections.synchronizedList(new ArrayList<>());
-	private volatile boolean running = true;
+	private final ExecutorService executorService = Executors.newFixedThreadPool(3); // 스레드풀 생성
 
-	@PostConstruct
-	public void startServer() throws IOException {
-		serverSocket = new ServerSocket(8887);
-
-		while (running) {
-			try {
+	@EventListener(ApplicationReadyEvent.class)
+	@Async
+	public void startServer() {
+		log.debug("log test!");
+		try {
+			serverSocket = new ServerSocket(8887);
+			log.info("Server socket started on port 8887");
+			while (true) {
 				Socket socket = serverSocket.accept();
-				if (!running) {
-					break;
-				}
-				ChatThread chatThread = new ChatThread(socket, chatThreads);
-				chatThread.start();
-			} catch (IOException e) {
-				if (running) {
-					throw e; // rethrow exception if server is still running
-				}
+				executorService.submit(() -> {
+					ChatThread chatThread = null;
+					try {
+						chatThread = new ChatThread(socket, chatThreads);
+						chatThread.start();
+						log.info("Client connected: " + socket.getInetAddress());
+						log.info("Client name: " + chatThread.getName());
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+				});
 			}
+		} catch (IOException e) {
+			log.error("Error starting server socket", e);
 		}
 	}
 
 	@PreDestroy
 	public void stopServer() throws IOException {
-		running = false;
-		if (serverSocket != null && !serverSocket.isClosed()) {
+		if(serverSocket != null && !serverSocket.isClosed()) {
 			serverSocket.close();
-		}
-
+		} //server socket closed
+		for(ChatThread c : chatThreads) {
+			if(c != null && !c.getSocket().isClosed()) {
+				c.getSocket().close();
+			}
+		} //clinet socket closed
 	}
 }

@@ -8,8 +8,11 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
+import lombok.Getter;
+
+@Getter
 public class ChatThread extends Thread {
-	private String name;
+	private String userName;
 	private BufferedReader br;
 	private PrintWriter pw;
 	private Socket socket;
@@ -21,7 +24,7 @@ public class ChatThread extends Thread {
 		PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
 		this.br = br;
 		this.pw = pw;
-		this.name = br.readLine();
+		this.userName = br.readLine();
 		this.list = list;
 		this.list.add(this);
 	}
