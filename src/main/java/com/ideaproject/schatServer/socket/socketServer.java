@@ -51,19 +51,25 @@ public class socketServer {
 				});
 			}
 		} catch (IOException e) {
-			log.error("Error starting server socket", e);
+			log.error("Error starting server socket : " + e);
 		}
 	}
 
 	@PreDestroy
-	public void stopServer() throws IOException {
-		if(serverSocket != null && !serverSocket.isClosed()) {
-			serverSocket.close();
-		} //server socket closed
-		for(ChatThread c : chatThreads) {
-			if(c != null && !c.getSocket().isClosed()) {
-				c.getSocket().close();
-			}
-		} //clinet socket closed
+	public void stopServer() {
+		try {
+			// 종료 시점에 호출될 메소드
+			System.out.println("Cleanup called!");
+			if(serverSocket != null && !serverSocket.isClosed()) {
+				serverSocket.close();
+			} //server socket closed
+			for(ChatThread c : chatThreads) {
+				if(c != null && !c.getSocket().isClosed()) {
+					c.getSocket().close();
+				}
+			} //clinet socket closed
+		} catch (Exception e) {
+			log.error("Error End server socket : " + e); // 예외가 발생하면 로그를 기록
+		}
 	}
 }
