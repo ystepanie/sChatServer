@@ -17,14 +17,12 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.ideaproject.schatServer.thread.ChatThread;
-import com.sun.tools.javac.Main;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 
 @Component
-public class socketServer {
-	private static final Logger log = LoggerFactory.getLogger(socketServer.class);
+public class SocketServer {
+	private static final Logger log = LoggerFactory.getLogger(SocketServer.class);
 	private ServerSocket serverSocket;
 	private List<ChatThread> chatThreads = Collections.synchronizedList(new ArrayList<>());
 	private final ExecutorService executorService = Executors.newFixedThreadPool(3); // 스레드풀 생성
