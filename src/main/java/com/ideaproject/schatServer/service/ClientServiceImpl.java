@@ -33,7 +33,7 @@ public class ClientServiceImpl implements ClientService {
 		Map<String, Object> returnMap = new HashMap<>();
 		returnMap.put("status", 200);
 		returnMap.put("message", "connect success");
-		returnMap.put("data", );
+		returnMap.put("data", "null");
 		return returnMap;
 	}
 }

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Chat</title>
+</head>
+<body onload="connect()">
+<h1>WebSocket Chat</h1>
+<ul id="messages"></ul>
+<input type="text" id="messageInput" placeholder="Type a message..."/>
+<button onclick="sendMessage()">Send</button>
+</body>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+    let socket;
+
+    function connect() {
+        socket = new WebSocket("ws://localhost:8354/chat");
+
+        socket.onmessage = function(event) {
+            let messages = $("#messages");
+            messages.append('<li>'+ event.data +'</li>');
+        };
+    }
+
+    function sendMessage() {
+        let messageInput = $("#messageInput");
+        socket.send(messageInput.val());
+        messageInput.val("");
+    }
+</script>
+</html>
