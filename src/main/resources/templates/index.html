@@ -10,11 +10,19 @@
 <button onclick="sendMessage()">Send</button>
 </body>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+</html>
 <script>
     let socket;
 
     function connect() {
         socket = new WebSocket("ws://localhost:8354/chat");
+
+        const randomNickname = "user" + Math.floor(Math.random() * 10000);
+
+        socket.onopen = function() {
+            // 연결 후 첫 메시지에 닉네임 전송
+            socket.send(JSON.stringify({ type: "nickname", content: randomNickname }));
+        };
 
         socket.onmessage = function(event) {
             let messages = $("#messages");
@@ -24,8 +32,7 @@
 
     function sendMessage() {
         let messageInput = $("#messageInput");
-        socket.send(messageInput.val());
+        socket.send(JSON.stringify({ type: "message", content: messageInput.val() }));
         messageInput.val("");
     }
 </script>
-</html>
