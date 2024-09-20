@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>All Chat</title>
+    <title>S Chat</title>
 </head>
 <body onload="connect()">
 <h1>WebSocket Chat</h1>
 <ul id="messages"></ul>
 <input type="text" id="messageInput" placeholder="Type a message..."/>
 <button onclick="sendMessage()">Send</button>
+<div id="participantList"></div>
 </body>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </html>
@@ -21,12 +22,21 @@
 
         socket.onopen = function() {
             // 연결 후 첫 메시지에 닉네임 전송
-            socket.send(JSON.stringify({ type: "nickname", content: randomNickname }));
+            socket.send(JSON.stringify({ type: "open", content: randomNickname }));
         };
 
         socket.onmessage = function(event) {
-            let messages = $("#messages");
-            messages.append('<li>'+ event.data +'</li>');
+            let data = event.data;
+
+            // 참여자 목록을 업데이트하는 메시지인지 확인
+            if (data.startsWith("Participants: ")) {
+                const participantsList = data.replace("Participants: ", "");
+                $("#participantList").text("참여자 목록: " + participantsList);
+            } else {
+                // 일반 채팅 메시지 처리
+                let messages = $("#messages");
+                messages.append('<li>'+ data +'</li>');
+            }
         };
     }
 
