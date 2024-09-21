@@ -38,5 +38,4 @@ public class ClientController {
 
 		return new Response(status, message);
 	}
-
 }
