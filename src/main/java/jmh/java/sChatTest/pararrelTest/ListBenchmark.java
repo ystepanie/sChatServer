@@ -32,11 +32,11 @@ public class ListBenchmark {
 		//초기화
 		copyOnWriteList = new CopyOnWriteArrayList<>();
 		synchronizedList = Collections.synchronizedList(new ArrayList<>());
-		// //유저 10명 가정
-		// for(int i=0; i<10000; i++) {
-		// 	copyOnWriteList.add("user"+i);
-		// 	synchronizedList.add("user"+i);
-		// }
+		//유저 10명 가정
+		for(int i=0; i<500; i++) {
+			copyOnWriteList.add("user"+i);
+			synchronizedList.add("user"+i);
+		}
 	}
 
 	@Benchmark
@@ -73,29 +73,29 @@ public class ListBenchmark {
 	@Benchmark
 	public void testSynchronizedList() {
 		// 유저 5명 접속, 세션 정보 조회, 세션에 메시지 발송(총 2번 조회)
-		copyOnWriteList.add("user"+11);
-		copyOnWriteList.add("user"+12);
-		copyOnWriteList.add("user"+13);
-		copyOnWriteList.add("user"+14);
-		copyOnWriteList.add("user"+15);
+		synchronizedList.add("user"+11);
+		synchronizedList.add("user"+12);
+		synchronizedList.add("user"+13);
+		synchronizedList.add("user"+14);
+		synchronizedList.add("user"+15);
 
 		for(int i=0; i<5; i++) {
 			for(int j=0; j<2; j++) {
-				for(String s : copyOnWriteList) {
+				for(String s : synchronizedList) {
 					// 메세지 전송
 				}
 			}
 		}
 
-		copyOnWriteList.remove("user"+11);
-		copyOnWriteList.remove("user"+12);
-		copyOnWriteList.remove("user"+13);
-		copyOnWriteList.remove("user"+14);
-		copyOnWriteList.remove("user"+15);
+		synchronizedList.remove("user"+11);
+		synchronizedList.remove("user"+12);
+		synchronizedList.remove("user"+13);
+		synchronizedList.remove("user"+14);
+		synchronizedList.remove("user"+15);
 
 		for(int i=0; i<5; i++) {
 			for(int j=0; j<2; j++) {
-				for(String s : copyOnWriteList) {
+				for(String s : synchronizedList) {
 					// 메세지 전송
 				}
 			}
