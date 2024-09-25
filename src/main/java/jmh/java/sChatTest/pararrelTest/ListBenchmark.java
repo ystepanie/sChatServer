@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
@@ -26,36 +27,78 @@ public class ListBenchmark {
 	private List<String> copyOnWriteList;
 	private List<String> synchronizedList;
 
-	@Setup
+	@Setup(Level.Invocation)
 	public void setup() {
 		//초기화
 		copyOnWriteList = new CopyOnWriteArrayList<>();
 		synchronizedList = Collections.synchronizedList(new ArrayList<>());
-
-		//유저 10명 가정
-		for(int i=0; i<10; i++) {
-			copyOnWriteList.add("user"+i);
-			synchronizedList.add("user"+i);
-		}
+		// //유저 10명 가정
+		// for(int i=0; i<10000; i++) {
+		// 	copyOnWriteList.add("user"+i);
+		// 	synchronizedList.add("user"+i);
+		// }
 	}
 
 	@Benchmark
 	public void testCopyOnWriteArrayList() {
-		// 유저 1명 접속, 메시지 전송 10번, 유저 1명 제거
-		copyOnWriteList.add("user11");
-		for(String s : copyOnWriteList) {
-			System.out.println("copyonwrite send message " + s + " >> ");
+		// 유저 5명 접속, 세션 정보 조회, 세션에 메시지 발송(총 2번 조회)
+		copyOnWriteList.add("user"+11);
+		copyOnWriteList.add("user"+12);
+		copyOnWriteList.add("user"+13);
+		copyOnWriteList.add("user"+14);
+		copyOnWriteList.add("user"+15);
+
+		for(int i=0; i<5; i++) {
+			for(int j=0; j<2; j++) {
+				for(String s : copyOnWriteList) {
+					// 메세지 전송
+				}
+			}
 		}
-		copyOnWriteList.remove(0);
+
+		copyOnWriteList.remove("user"+11);
+		copyOnWriteList.remove("user"+12);
+		copyOnWriteList.remove("user"+13);
+		copyOnWriteList.remove("user"+14);
+		copyOnWriteList.remove("user"+15);
+		for(int i=0; i<5; i++) {
+			for(int j=0; j<2; j++) {
+				for(String s : copyOnWriteList) {
+					// 메세지 전송
+				}
+			}
+		}
 	}
 
 	@Benchmark
 	public void testSynchronizedList() {
-		// 유저 1명 접속, 메시지 전송 10번, 유저 1명 제거
-		synchronizedList.add("user11");
-		for(String s : synchronizedList) {
-			System.out.println("synchronized send message " + s + " >> ");
+		// 유저 5명 접속, 세션 정보 조회, 세션에 메시지 발송(총 2번 조회)
+		copyOnWriteList.add("user"+11);
+		copyOnWriteList.add("user"+12);
+		copyOnWriteList.add("user"+13);
+		copyOnWriteList.add("user"+14);
+		copyOnWriteList.add("user"+15);
+
+		for(int i=0; i<5; i++) {
+			for(int j=0; j<2; j++) {
+				for(String s : copyOnWriteList) {
+					// 메세지 전송
+				}
+			}
 		}
-		synchronizedList.remove(0);
+
+		copyOnWriteList.remove("user"+11);
+		copyOnWriteList.remove("user"+12);
+		copyOnWriteList.remove("user"+13);
+		copyOnWriteList.remove("user"+14);
+		copyOnWriteList.remove("user"+15);
+
+		for(int i=0; i<5; i++) {
+			for(int j=0; j<2; j++) {
+				for(String s : copyOnWriteList) {
+					// 메세지 전송
+				}
+			}
+		}
 	}
 }
