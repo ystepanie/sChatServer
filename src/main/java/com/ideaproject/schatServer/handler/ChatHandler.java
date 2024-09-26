@@ -17,7 +17,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ChatHandler extends TextWebSocketHandler {
-	private List<WebSocketSession> sessions = Collections.synchronizedList(new ArrayList<>());
+	private final List<WebSocketSession> sessions = Collections.synchronizedList(new ArrayList<>());
 	private final static Logger log = LoggerFactory.getLogger(ChatHandler.class);
 	private ObjectMapper objectMapper = new ObjectMapper();
 
