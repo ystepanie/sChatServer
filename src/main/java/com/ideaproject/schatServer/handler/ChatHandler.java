@@ -16,6 +16,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
 public class ChatHandler extends TextWebSocketHandler {
 	private final List<WebSocketSession> sessions = Collections.synchronizedList(new ArrayList<>());
 	private final static Logger log = LoggerFactory.getLogger(ChatHandler.class);
@@ -29,8 +30,10 @@ public class ChatHandler extends TextWebSocketHandler {
 	private void broadcastParticipantList() throws Exception {
 		// 현재 세션 목록을 통해 참여자 목록 전송
 		String participants = getParticipantList();
-		for (WebSocketSession session : sessions) {
-			session.sendMessage(new TextMessage(participants));
+		synchronized (sessions) {
+			for (WebSocketSession session : sessions) {
+				session.sendMessage(new TextMessage(participants));
+			}
 		}
 	}
 
