@@ -8,7 +8,15 @@
 <ul id="messages"></ul>
 <input type="text" id="messageInput" placeholder="Type a message..."/>
 <button onclick="sendMessage()">Send</button>
-<div id="participantList"></div>
+<table>
+    <thead>
+        <tr>
+            <th>닉네임</th>
+        </tr>
+    </thead>
+    <tbody id="pBody">
+    </tbody>
+</table>
 </body>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </html>
@@ -30,8 +38,15 @@
 
             // 참여자 목록을 업데이트하는 메시지인지 확인
             if (data.startsWith("Participants: ")) {
-                const participantsList = data.replace("Participants: ", "");
-                $("#participantList").text("참여자 목록: " + participantsList);
+                const participantsList = data.replace("Participants: ", "").split(",");
+
+                // 데이터 추가
+                participantsList.forEach(item => {
+                    var $tr = $("<tr></tr>");
+                    $tr.append($("<td></td>").text(item));
+                    $("#pBody").append($tr);
+                });
+
             } else {
                 // 일반 채팅 메시지 처리
                 let messages = $("#messages");

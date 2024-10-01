@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,9 +39,10 @@ public class ChatHandler extends TextWebSocketHandler {
 	private String getParticipantList() {
 		// 세션에서 닉네임을 추출해 참여자 목록을 문자열로 만듦
 		StringBuilder participants = new StringBuilder("Participants: ");
+
 		for (WebSocketSession session : sessions) {
 			String nickname = (String) session.getAttributes().get("nickname");
-			participants.append(nickname).append(", ");
+			participants.append(nickname).append(",");
 		}
 		return participants.toString();
 	}
