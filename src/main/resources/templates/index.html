@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" href="/stylesheets/index.css" type="text/css">
     <title>S Chat</title>
 </head>
 <body onload="connect()">
@@ -8,15 +9,12 @@
 <ul id="messages"></ul>
 <input type="text" id="messageInput" placeholder="Type a message..."/>
 <button onclick="sendMessage()">Send</button>
-<table>
-    <thead>
-        <tr>
-            <th>닉네임</th>
-        </tr>
-    </thead>
-    <tbody id="pBody">
-    </tbody>
-</table>
+<div class="table-container">
+    <table>
+        <tbody id="pBody">
+        </tbody>
+    </table>
+</div>
 </body>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </html>
@@ -41,6 +39,7 @@
                 const participantsList = data.replace("Participants: ", "").split(",");
 
                 // 데이터 추가
+                $("#pBody").html('');
                 participantsList.forEach(item => {
                     var $tr = $("<tr></tr>");
                     $tr.append($("<td></td>").text(item));

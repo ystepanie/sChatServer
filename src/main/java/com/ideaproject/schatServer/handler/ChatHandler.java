@@ -39,11 +39,12 @@ public class ChatHandler extends TextWebSocketHandler {
 	private String getParticipantList() {
 		// 세션에서 닉네임을 추출해 참여자 목록을 문자열로 만듦
 		StringBuilder participants = new StringBuilder("Participants: ");
-
+		List<String> sList = new ArrayList<>();
 		for (WebSocketSession session : sessions) {
 			String nickname = (String) session.getAttributes().get("nickname");
-			participants.append(nickname).append(",");
+			sList.add(nickname);
 		}
+		participants.append(String.join(",", sList));
 		return participants.toString();
 	}
 
