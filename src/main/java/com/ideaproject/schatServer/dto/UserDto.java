@@ -3,10 +3,10 @@ package com.ideaproject.schatServer.dto;
 import org.springframework.context.annotation.Description;
 
 import lombok.Getter;
-import lombok.Setter;
 
-@Description("클라이언트 소켓 dto")
+@Description("유저 dto")
 @Getter
-public class ClientInitDto {
+public class UserDto {
 	private String name;
+	private String content;
 }

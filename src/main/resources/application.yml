@@ -1,6 +1,9 @@
 spring:
   application:
     name: schatServer
+  redis:
+    host: localhost
+    port: 8355
 
 springdoc:
   api-docs:
