@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Description("유저 dto")
 @Getter
-public class UserDto {
+public class UserProfileDto {
 	private String name;
 	private String content;
 }

@@ -7,12 +7,12 @@ spring:
 
 springdoc:
   api-docs:
-    enabled: true #swagger ?? ?? ??
+    enabled: true
   swagger-ui:
     path: /index.html #swagger path
-    doc-expansion: list #??? ??? ?? ?? (none: ??, full: ????)
-    tags-sorter: alpha # alpha(??? ????), method(HTTP????)
-    operationsSorter: method #?? ? API ?? ??
+    doc-expansion: list
+    tags-sorter: alpha
+    operationsSorter: method
     #groups-order: DESC
     #disable-swagger-default-url: true
     #display-request-duration: true

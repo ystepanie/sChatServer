@@ -1,18 +1,17 @@
 package com.ideaproject.schatServer.controller;
 
-import java.util.Map;
-import java.util.Optional;
-
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ideaproject.schatServer.dto.UserDto;
+import com.ideaproject.schatServer.dto.UserProfileDto;
 import com.ideaproject.schatServer.response.Response;
 import com.ideaproject.schatServer.service.UserService;
+import com.ideaproject.schatServer.vo.UserProfileVo;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -27,16 +26,20 @@ public class UserController {
 	// 프로필 조회
 	@GetMapping(value = "/getUserProfile/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Response selectUserProfile(@PathVariable(name = "userId") String userId) throws Exception {
-		Map<String, Object> resultMap = userService.selectUserProfile(userId);
+		UserProfileVo userProfileVo = userService.selectUserProfile(userId);
+		//TODO : vo 객체 response 객체로 변환하기
 
-		//status check
-		Optional<Object> nullableStatus = Optional.ofNullable(resultMap.get("status"));
-		Optional<Object> nullableMessage = Optional.ofNullable(resultMap.get("message"));
-
-		int status = (int) nullableStatus.orElse(400);
-		String message = (String) nullableMessage.orElse("유저 정보가 없습니다.");
-		String data = (String) resultMap.get("data");
-
-		return new Response(status, message, data);
+		return new Response();
 	}
+
+	// 프로필 저장
+	@PostMapping(value = "/postUserProfile", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Response insertUserProfile(@RequestBody UserProfileDto userProfileDto) throws Exception {
+		int result = userService.insertUserProfile(userProfileDto);
+		//TODO : 결과값 response 객체로 변환하기
+		
+		return new Response();
+	}
+
+
 }
