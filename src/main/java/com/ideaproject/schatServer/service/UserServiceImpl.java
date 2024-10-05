@@ -1,6 +1,5 @@
 package com.ideaproject.schatServer.service;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -35,9 +34,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int insertUserProfile(UserProfileDto userProfileDto) throws Exception {
 		String key = userProfileDto.getName();
-		Map<String, Object> value = new HashMap<>();
-		value.put("content", userProfileDto.getContent());
 
+		ObjectMapper objectMapper = new ObjectMapper();
+		Map<String, Object> value = objectMapper.convertValue(userProfileDto, Map.class);
 		int result = redisService.postValueToDto(key, value);
 		if(result < 1) {
 			throw new UnexpectedException("레디스 데이터 저장에 실패했습니다.");

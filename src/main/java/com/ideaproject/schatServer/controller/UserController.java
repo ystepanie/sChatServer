@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ideaproject.schatServer.dto.UserProfileDto;
 import com.ideaproject.schatServer.response.Response;
 import com.ideaproject.schatServer.service.UserService;
@@ -29,7 +30,9 @@ public class UserController {
 	@GetMapping(value = "/getUserProfile/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Response selectUserProfile(@NonNull  @PathVariable(name = "userId") String userId) throws Exception {
 		UserProfileVo userProfileVo = userService.selectUserProfile(userId);
-		return new Response(200, "프로필을 조회했습니다.", userProfileVo.toString());
+		// vo to string
+		ObjectMapper objectMapper = new ObjectMapper();
+		return new Response(200, "프로필을 조회했습니다.", objectMapper.writeValueAsString(userProfileVo));
 	}
 
 	// 프로필 저장
@@ -43,5 +46,5 @@ public class UserController {
 
 		return new Response(200, "프로필을 저장했습니다.");
 	}
-	
+
 }

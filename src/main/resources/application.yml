@@ -4,6 +4,7 @@ spring:
   redis:
     host: localhost
     port: 8355
+    timeout: 6000 #60sec
 
 springdoc:
   api-docs:
