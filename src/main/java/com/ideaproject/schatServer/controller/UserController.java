@@ -29,9 +29,7 @@ public class UserController {
 	@GetMapping(value = "/getUserProfile/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Response selectUserProfile(@NonNull  @PathVariable(name = "userId") String userId) throws Exception {
 		UserProfileVo userProfileVo = userService.selectUserProfile(userId);
-		//TODO : vo 객체 response 객체로 변환하기
-
-		return new Response();
+		return new Response(200, "프로필을 조회했습니다.", userProfileVo.toString());
 	}
 
 	// 프로필 저장
@@ -40,12 +38,10 @@ public class UserController {
 									  @Valid @RequestBody UserProfileDto userProfileDto) throws Exception {
 		// dto setting
 		userProfileDto.setName(userId);
+		// 프로필 저장
+		userService.insertUserProfile(userProfileDto);
 
-		int result = userService.insertUserProfile(userProfileDto);
-		//TODO : 결과값 response 객체로 변환하기
-
-		return new Response();
+		return new Response(200, "프로필을 저장했습니다.");
 	}
-
-
+	
 }
