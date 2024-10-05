@@ -14,6 +14,8 @@ import com.ideaproject.schatServer.service.UserService;
 import com.ideaproject.schatServer.vo.UserProfileVo;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -25,7 +27,7 @@ public class UserController {
 
 	// 프로필 조회
 	@GetMapping(value = "/getUserProfile/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Response selectUserProfile(@PathVariable(name = "userId") String userId) throws Exception {
+	public Response selectUserProfile(@NonNull  @PathVariable(name = "userId") String userId) throws Exception {
 		UserProfileVo userProfileVo = userService.selectUserProfile(userId);
 		//TODO : vo 객체 response 객체로 변환하기
 
@@ -33,11 +35,15 @@ public class UserController {
 	}
 
 	// 프로필 저장
-	@PostMapping(value = "/postUserProfile", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Response insertUserProfile(@RequestBody UserProfileDto userProfileDto) throws Exception {
+	@PostMapping(value = "/postUserProfile/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Response insertUserProfile(@NonNull  @PathVariable(name = "userId") String userId,
+									  @Valid @RequestBody UserProfileDto userProfileDto) throws Exception {
+		// dto setting
+		userProfileDto.setName(userId);
+
 		int result = userService.insertUserProfile(userProfileDto);
 		//TODO : 결과값 response 객체로 변환하기
-		
+
 		return new Response();
 	}
 
