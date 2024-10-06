@@ -9,7 +9,7 @@ import com.ideaproject.schatServer.dto.UserProfileDto;
 import com.ideaproject.schatServer.exception.InvalidRequestException;
 import com.ideaproject.schatServer.exception.UnexpectedException;
 import com.ideaproject.schatServer.redis.RedisService;
-import com.ideaproject.schatServer.vo.UserProfileVo;
+import com.ideaproject.schatServer.entity.UserProfile;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,16 +19,16 @@ public class UserServiceImpl implements UserService {
 	private final RedisService redisService;
 
 	@Override
-	public UserProfileVo selectUserProfile(String userId) throws Exception {
+	public UserProfile selectUserProfile(String userId) throws Exception {
 		Map<String, Object> redisMap = redisService.getValueToMap(userId);
 
 		ObjectMapper objectMapper = new ObjectMapper();
-		UserProfileVo userProfileVo = objectMapper.convertValue(redisMap, UserProfileVo.class);
-		if(userProfileVo == null) {
+		UserProfile userProfile = objectMapper.convertValue(redisMap, UserProfile.class);
+		if(userProfile == null) {
 			throw new InvalidRequestException("해당하는 프로필 정보가 없습니다.");
 		}
 
-		return userProfileVo;
+		return userProfile;
 	}
 
 	@Override

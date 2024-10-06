@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ideaproject.schatServer.dto.UserProfileDto;
 import com.ideaproject.schatServer.response.Response;
 import com.ideaproject.schatServer.service.UserService;
-import com.ideaproject.schatServer.vo.UserProfileVo;
+import com.ideaproject.schatServer.entity.UserProfile;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -29,10 +29,10 @@ public class UserController {
 	// 프로필 조회
 	@GetMapping(value = "/getUserProfile/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Response selectUserProfile(@NonNull  @PathVariable(name = "userId") String userId) throws Exception {
-		UserProfileVo userProfileVo = userService.selectUserProfile(userId);
+		UserProfile userProfile = userService.selectUserProfile(userId);
 		// vo to string
 		ObjectMapper objectMapper = new ObjectMapper();
-		return new Response(200, "프로필을 조회했습니다.", objectMapper.writeValueAsString(userProfileVo));
+		return new Response(200, "프로필을 조회했습니다.", objectMapper.writeValueAsString(userProfile));
 	}
 
 	// 프로필 저장
